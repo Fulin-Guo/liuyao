@@ -1,13 +1,12 @@
 from datetime import datetime
 from typing import Dict
 from lunar_python import Lunar
-# 如果此类需要访问常量，可以从 .constants 导入，但目前看其方法主要依赖lunar_python库
 
 class LunarDateTimeConverter:
-    """农历日期时间转换器"""
-
-    def __init__(self):
-        self.lunar = Lunar.fromDate(datetime.now())
+    def __init__(self, dt: datetime = None):
+        if dt is None:
+            dt = datetime.now()
+        self.lunar = Lunar.fromDate(dt)
         
     def get_basic_info(self) -> Dict:
         """获取基础农历信息"""

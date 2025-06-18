@@ -1,1 +1,8 @@
-lunar_python
+# python = 3.10
+fastapi
+uvicorn[standard]
+sqlalchemy
+lunar-python
+pydantic
+python-dotenv
+streamlit
