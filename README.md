@@ -39,10 +39,13 @@ python create_api_key.py
 使用 uvicorn 启动 FastAPI 应用：
 
 ```bash
-uvicorn app.main:app --reload
+# 1. 切换到项目根目录 
+# cd D:\PyProject\liuyao 
+# 2. 启动FastAPI服务 
+uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 
-API服务默认运行在 `http://127.0.0.1:8000`。你可以访问 `http://127.0.0.1:8000/docs` 查看API文档和进行交互式测试。
+API服务默认运行在 `http://0.0.0.0:8000`。你可以访问 `http://127.0.0.1:8000/docs` 查看API文档和进行交互式测试。
 
 **API使用示例**:
 
@@ -63,10 +66,13 @@ API服务默认运行在 `http://127.0.0.1:8000`。你可以访问 `http://127.0
 在新的终端中，使用 streamlit 启动 WebUI：
 
 ```bash
-streamlit run webui.py
+# 1. (在新的终端窗口中) 切换到项目根目录 
+# cd D:\PyProject\liuyao 
+# 2. 启动Streamlit服务 
+streamlit run webui_api.py
 ```
 
-WebUI通常会自动在浏览器中打开，地址一般为 `http://localhost:8501`。
+WebUI通常会自动在浏览器中打开，地址一般为 `http://localhost:8501`（如果端口未被占用）。
 
 ## 项目结构
 
@@ -91,7 +97,8 @@ liuyao/
 ├── liuyao_api.db           # SQLite数据库文件
 ├── requirement.txt         # 项目依赖
 ├── tests/                  # 测试目录 (当前为空)
-└── webui.py                # Streamlit Web用户界面
+├── webui_api.py            # Streamlit Web用户界面（前后端分离）
+└── webui.py                # Streamlit Web用户界面（直接调用）
 ```
 
 ## 未来展望
