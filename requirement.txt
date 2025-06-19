@@ -6,3 +6,4 @@ lunar-python
 pydantic
 python-dotenv
 streamlit
+requests
