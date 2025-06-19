@@ -1,4 +1,3 @@
-# create_api_key.py
 import secrets
 import argparse
 from app.database import SessionLocal

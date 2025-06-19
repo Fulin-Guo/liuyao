@@ -1,4 +1,3 @@
-# app/dependencies.py
 from fastapi import Header, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from . import crud

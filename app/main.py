@@ -1,4 +1,3 @@
-# app/main.py
 from fastapi import FastAPI, Depends, HTTPException
 from . import models, schemas
 from .database import engine
