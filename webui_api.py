@@ -84,7 +84,7 @@ with st.container():
     if not use_current_time:
         col1, col2 = st.columns(2)
         with col1:
-            d = st.date_input("选择日期", datetime.now())
+            d = st.date_input("选择日期", datetime.now(), min_value=datetime(1800, 1, 1), max_value=datetime(2100, 12, 31))
         with col2:
             t = st.time_input("选择时间", datetime.now().time())
         target_datetime = datetime.combine(d, t)
