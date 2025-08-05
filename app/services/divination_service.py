@@ -19,7 +19,7 @@ class HexagramCalculator:
     
     @staticmethod
     def calculate_hexagram_indices(parameters: Dict) -> Tuple[int, int, int]:
-        sum_base = parameters['dizhi_year'] + abs(parameters['month']) + parameters['day']
+        sum_base = parameters['dizhi_year'] + parameters['month'] + parameters['day']
         upper = sum_base % 8 or 8
         lower = (sum_base + parameters['dizhi_hour']) % 8 or 8
         moving_line = (sum_base + parameters['dizhi_hour']) % 6 or 6
@@ -88,7 +88,7 @@ def perform_divination(target_time: datetime = None) -> Dict[str, Any]:
     
     calculation_params = {
         'dizhi_year': HexagramCalculator.get_dizhi_number(ganzhi_info['year_gz'][1]),
-        'month': basic_info['month'],
+        'month': abs(basic_info['month']),
         'day': basic_info['day'],
         'dizhi_hour': HexagramCalculator.get_dizhi_number(ganzhi_info['hour_gz'][1])
     }
