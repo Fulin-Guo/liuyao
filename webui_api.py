@@ -78,7 +78,7 @@ def create_manual_hexagram_result(manual_yaos):
         # 使用当前时间调用API，然后替换卦象数据
         headers = {
             "Content-Type": "application/json",
-            "X-API-Key": api_key
+            "Authorization": f"Bearer {api_key}"
         }
         payload = {
             "target_time": datetime.now().isoformat()
@@ -484,7 +484,7 @@ def create_name_based_hexagram_result(upper_original: str, lower_original: str, 
 
         headers = {
             "Content-Type": "application/json",
-            "X-API-Key": api_key
+            "Authorization": f"Bearer {api_key}"
         }
         payload = {"target_time": datetime.now().isoformat()}
         response = requests.post(api_url, headers=headers, json=payload, timeout=10)
@@ -605,7 +605,7 @@ if st.button("开始排盘", type="primary", use_container_width=True):
         # 准备API请求的头部和载荷
         headers = {
             "Content-Type": "application/json",
-            "X-API-Key": api_key
+            "Authorization": f"Bearer {api_key}"
         }
         payload = {
             "target_time": target_datetime.isoformat() if target_datetime else None
