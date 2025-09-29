@@ -1,6 +1,6 @@
 # app/services/divination_service.py
 from datetime import datetime
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, List
 
 from . import constants
 from .time_converter import LunarDateTimeConverter
@@ -43,7 +43,23 @@ class HexagramCalculator:
         return ben_gua, "".join(bian_list)
 
 # --- 新增的辅助函数 ---
-def _get_hexagram_details_from_binary(binary_str: str) -> Dict[str, Any]:
+def calculate_liushen(day_tiangan: str) -> List[str]:
+    """
+    根据日干计算六神配置
+    :param day_tiangan: 日干（甲、乙、丙等）
+    :return: 六爻对应的六神列表（从初爻到上爻）
+    """
+    start_index = constants.RIGANQI_LIUSHEN.get(day_tiangan, 0)
+    liushen_sequence = []
+    
+    # 从初爻到上爻，按六神顺序循环配置
+    for i in range(6):
+        liushen_index = (start_index + i) % 6
+        liushen_sequence.append(constants.LIUSHEN[liushen_index])
+    
+    return liushen_sequence
+
+def _get_hexagram_details_from_binary(binary_str: str, day_tiangan: str = None) -> Dict[str, Any]:
     """根据六爻二进制串，反查卦名、上下卦、六爻信息"""
     
     # 建立二进制 -> 卦名 的反向查找表
@@ -63,13 +79,21 @@ def _get_hexagram_details_from_binary(binary_str: str) -> Dict[str, Any]:
     
     base_name_for_liuyao = full_name.split('（')[0]
     liuyao_info = constants.GUA_LIUYAO.get(base_name_for_liuyao, {}).get('yao_info', [])
+    gong = constants.GUA_LIUYAO.get(base_name_for_liuyao, {}).get('gong', '未知宫')
+    
+    # 计算六神（如果提供了日干）
+    liushen_list = []
+    if day_tiangan:
+        liushen_list = calculate_liushen(day_tiangan)
 
     return {
         "name": full_name,
         "upper_trigram": upper_name,
         "lower_trigram": lower_name,
         "yao_binary": binary_str,
+        "gong": gong,
         "liuyao": liuyao_info,
+        "liushen": liushen_list,
     }
 
 # --- 服务函数，替代 run_divination ---
@@ -96,9 +120,12 @@ def perform_divination(target_time: datetime = None) -> Dict[str, Any]:
     upper_idx, lower_idx, moving_line = HexagramCalculator.calculate_hexagram_indices(calculation_params)
     ben_gua_bin, bian_gua_bin = HexagramCalculator.calculate_changes(upper_idx, lower_idx, moving_line)
     
+    # 获取日干用于计算六神
+    day_tiangan = ganzhi_info['day_gz'][0]
+    
     # 使用辅助函数获取本卦和变卦的完整信息
-    ben_gua_details = _get_hexagram_details_from_binary(ben_gua_bin)
-    bian_gua_details = _get_hexagram_details_from_binary(bian_gua_bin)
+    ben_gua_details = _get_hexagram_details_from_binary(ben_gua_bin, day_tiangan)
+    bian_gua_details = _get_hexagram_details_from_binary(bian_gua_bin, day_tiangan)
 
     result = {
         "query_time": {
